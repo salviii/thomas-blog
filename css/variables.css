@@ -1,0 +1,19 @@
+/* ── Design Tokens ─────────────────────────────────────────── */
+/* JBL Lansing catalog: warm yellow, black, white, gray.      */
+:root {
+  --color-white:    #F8F5E9;
+  --color-cream:    #F7F4EC;
+  --color-yellow:   #F2D544;
+  --color-gold:     #D4BA2E;
+  --color-black:    #1E1E1E;
+  --color-darkgray: #3A3A3A;
+  --color-gray:     #9E9680;
+  --color-lightgray:#D4D0C8;
+  --color-pale:     #F0EDE4;
+
+  --font-serif: "Georgia", "Times New Roman", serif;
+  --font-sans:  "Inter", "Helvetica Neue", "Arial", sans-serif;
+  --font-mono:  "JetBrains Mono", "SF Mono", "Consolas", monospace;
+
+  --grid-gap: 0px;
+}

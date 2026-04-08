@@ -1,0 +1,57 @@
+/* ── Responsive ─────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+
+  /* Fill full viewport, no scroll */
+  html, body { height: 100%; overflow: hidden; }
+  .catalog-grid { height: 100vh; }
+  /* grid tracks are set by squarify() — no override needed */
+
+  /* Tighter padding */
+  .cell { padding: 8px 9px; }
+
+  /* ── Article ── */
+  .cell--article .cell-title {
+    font-size: 8px;
+    -webkit-line-clamp: 4;
+    line-height: 1.2;
+  }
+  .cell--article .cell-date  { font-size: 6.5px; }
+  .cell--article .cell-tag   { font-size: 6px; bottom: 4px; right: 5px; }
+  .cell-content              { padding-top: 10px; gap: 2px; }
+
+  /* ── Bio ── */
+  .cell--bio .bio-name     { font-size: 12px; letter-spacing: 0.04em; }
+  .cell--bio .bio-text     { font-size: 7px; line-height: 1.35; margin-top: 4px; }
+  .cell--bio .bio-location { font-size: 6.5px; margin-top: 4px; }
+
+  /* ── Nav ── */
+  .nav-text   { font-size: 7px; letter-spacing: 0.06em; }
+  .nav-arrow  { font-size: 13px; }
+  .nav-label  { gap: 2px; }
+
+  /* ── Social ── */
+  .social-name  { font-size: 7px; }
+  .social-arrow { font-size: 9px; }
+  .social-link  { padding: 3px 0; gap: 4px; }
+  .social-list  { gap: 0; }
+
+  /* ── Image overlay ── */
+  .image-overlay         { padding: 6px 8px 16px; }
+  .cell--image .image-title { font-size: 7px; -webkit-line-clamp: 2; }
+  .cell--image .image-tag   { font-size: 5.5px; bottom: 4px; right: 5px; }
+
+  /* ── Readmore ── */
+  .cell--readmore .rm-text  { font-size: 7px; letter-spacing: 0.1em; }
+  .cell--readmore .rm-arrow { font-size: 15px; }
+}
+
+/* Small phones — tighten further */
+@media (max-width: 390px) {
+  .cell { padding: 6px 7px; }
+  .cell--article .cell-title { font-size: 7px; }
+  .cell--bio .bio-name       { font-size: 10px; }
+  .cell--bio .bio-text       { font-size: 6px; }
+  .nav-text                  { font-size: 6px; }
+  .social-name               { font-size: 6px; }
+}

@@ -1,0 +1,126 @@
+/* ── Typography ────────────────────────────────────────────── */
+
+/* Site title */
+.site-title {
+  font-family: var(--font-serif);
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+/* Article titles in cells */
+.cell-title {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+.cell--article .cell-title {
+  font-size: 17px;
+}
+
+.cell--featured .cell-title {
+  font-size: 24px;
+}
+
+/* Excerpts */
+.cell-excerpt {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--color-black);
+  opacity: 0.8;
+}
+
+/* Cell number — the core identity element */
+.cell-number {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1;
+  color: var(--color-gray);
+  user-select: none;
+}
+
+/* Date / byline */
+.cell-date {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  color: var(--color-gray);
+}
+
+/* Category tag */
+.cell-tag {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+/* Bio card typography */
+.bio-name {
+  font-family: var(--font-serif);
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.bio-title {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-gray);
+  letter-spacing: -0.01em;
+}
+
+.bio-text {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.bio-social a {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+/* Category card typography */
+.cell-category-name {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.cell-count {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-gray);
+}
+
+/* Title cell (site name cell) */
+.cell--title .site-title {
+  font-size: 22px;
+}
+
+.cell--title .site-subtitle {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-gray);
+}

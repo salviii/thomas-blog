@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>All Articles — Thomas English</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/reset.css">
+  <style>
+    html, body {
+      background: #F8F5E9;
+      color: var(--color-black);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 500;
+      background: radial-gradient(
+        ellipse at 50% 50%,
+        transparent                 0%,
+        rgba(180,180,175,0.04)     62%,
+        rgba(100,100, 95,0.20)     84%,
+        rgba( 20, 20, 18,0.50)    100%
+      );
+      mix-blend-mode: multiply;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(4px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    thead tr, tbody tr {
+      opacity: 0;
+      animation: fadeUp 0.15s ease forwards;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      thead tr, tbody tr { opacity: 1; animation: none; }
+    }
+
+    @keyframes noiseShift {
+      0%   { transform: translate(0,    0);   }
+      12%  { transform: translate(-5px, 3px); }
+      25%  { transform: translate( 4px,-4px); }
+      37%  { transform: translate(-3px, 5px); }
+      50%  { transform: translate( 5px,-2px); }
+      62%  { transform: translate(-4px,-4px); }
+      75%  { transform: translate( 3px, 5px); }
+      87%  { transform: translate(-5px,-1px); }
+      100% { transform: translate( 2px, 3px); }
+    }
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 501;
+      opacity: 0.25;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.68' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 256px 256px;
+      animation: noiseShift 0.05s steps(1) infinite;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    th, td {
+      background: #F8F5E9;
+      padding: 14px 18px;
+      border-right:  1px dotted rgba(30,30,30,0.22);
+      border-bottom: 1px dotted rgba(30,30,30,0.22);
+      vertical-align: middle;
+      text-align: left;
+    }
+
+    th:last-child, td:last-child { border-right: none; }
+
+    /* Blank edge spacer rows */
+    tr.spacer td { height: 72px; border-bottom: 1px dotted rgba(30,30,30,0.22); }
+    tfoot tr.spacer td { border-bottom: none; }
+
+    /* Column widths */
+    col.col-edge { width: 80px; }
+    col.col-num  { width: 52px; }
+    col.col-date { width: 110px; }
+    col.col-title{ width: auto; }
+    col.col-cat  { width: 90px; }
+
+    /* Header row */
+    thead th {
+      padding: 22px 18px 18px;
+      vertical-align: bottom;
+    }
+
+    .th-back a {
+      font-family: var(--font-serif);
+      font-size: 22px;
+      color: var(--color-gray);
+      text-decoration: none;
+    }
+    .th-back a:hover { color: var(--color-black); }
+
+    .th-title {
+      font-family: var(--font-serif);
+      font-size: 20px;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+    }
+
+    .th-count {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--color-gray);
+      text-align: right;
+    }
+
+    /* Article rows */
+    tbody tr { cursor: pointer; }
+    tbody tr:hover td { background: var(--color-yellow); }
+    tbody tr:hover .td-date,
+    tbody tr:hover .td-cat  { color: rgba(30,30,30,0.45); }
+    tbody tr:last-child td  { border-bottom: none; }
+
+    .td-num {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: rgba(30,30,30,0.28);
+      text-align: right;
+      padding-right: 14px;
+    }
+
+    .td-date {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--color-gray);
+      white-space: nowrap;
+    }
+
+    .td-title {
+      font-family: var(--font-serif);
+      font-size: 13px;
+      line-height: 1.35;
+    }
+    .td-title a {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .td-cat {
+      font-size: 8px;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--color-gray);
+      text-align: right;
+    }
+  </style>
+</head>
+<body>
+  <table>
+    <colgroup>
+      <col class="col-edge">
+      <col class="col-num">
+      <col class="col-date">
+      <col class="col-title">
+      <col class="col-cat">
+      <col class="col-edge">
+    </colgroup>
+    <thead>
+      <tr class="spacer"><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr>
+        <th></th>
+        <th class="th-back"><a href="index.html">←</a></th>
+        <th></th>
+        <th class="th-title">All Articles</th>
+        <th class="th-count" id="count"></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody id="list"></tbody>
+    <tfoot><tr class="spacer"><td></td><td></td><td></td><td></td><td></td><td></td></tr></tfoot>
+  </table>
+
+  <script>
+    const articles = [
+      {"id":1,"title":"'Hot Girls For Zohran' Cofounder's X Account Riddled With Anti-White, Anti-Cop Posts","url":"https://dailycaller.com/2026/02/11/kaif-gilani-hot-girls-for-zohran-founder-x-account-anti-white-police-posts/","date":"2026-02-11","category":"politics"},
+      {"id":2,"title":"Starmer's Implosion Could Hand Britain Its First Muslim Prime Minister","url":"https://dailycaller.com/2026/02/09/keir-starmer-shabana-mahmood-first-muslim-uk-prime-minister/","date":"2026-02-09","category":"world"},
+      {"id":3,"title":"Inside Jeffrey Epstein's Shockingly Extensive Gaming History","url":"https://dailycaller.com/2026/02/06/jeffrey-epstein-xbox-live-gaming-call-of-duty-fortnite-fifa-records/","date":"2026-02-06","category":"investigation"},
+      {"id":4,"title":"EXCLUSIVE: Exposed Exposed: A Shakeup At Trump's Bureau Of Prisons","url":"https://dailycaller.com/2026/02/05/bureau-of-prisons-trump-shakeup-colette-peters-federal/","date":"2026-02-05","category":"investigation"},
+      {"id":5,"title":"EXCLUSIVE: 'Woke' Obama-Appointed Judge Exposed For Allegedly Running Her Courtroom Like A Dictatorship","url":"https://dailycaller.com/2026/02/04/woke-judge-tanya-chutkan-courtroom-dictatorship-allegations-trump/","date":"2026-02-04","category":"investigation"},
+      {"id":6,"title":"ANALYSIS: From Gaza Hostages To Greenland, Here's How Trump Has Redefined American Power","url":"https://dailycaller.com/2026/02/03/trump-gaza-hostages-greenland-american-power-analysis/","date":"2026-02-03","category":"world"},
+      {"id":7,"title":"Biden's Pardon Of His Own Family Could Come Back To Haunt Democrats","url":"https://dailycaller.com/2026/01/31/biden-pardon-family-democrats-political-consequences/","date":"2026-01-31","category":"politics"},
+      {"id":8,"title":"China's Coast Guard Just Pulled Off A Terrifying First Near A Key US Ally","url":"https://dailycaller.com/2026/01/29/china-coast-guard-philippines-south-china-sea-us-ally/","date":"2026-01-29","category":"world"},
+      {"id":9,"title":"EXCLUSIVE: Inside Look At How Federal Agencies Are Covering Up Their DEI Programs","url":"https://dailycaller.com/2026/01/28/federal-agencies-cover-up-dei-programs-trump-executive-order/","date":"2026-01-28","category":"investigation"},
+      {"id":10,"title":"Trump Hits Pause On Foreign Aid, And The Global Outrage Machine Is Already In Overdrive","url":"https://dailycaller.com/2026/01/27/trump-foreign-aid-pause-global-outrage-reaction/","date":"2026-01-27","category":"world"},
+      {"id":11,"title":"Left-Wing Dark Money Group Behind Anti-Trump Lawfare Exposed In New Report","url":"https://dailycaller.com/2026/01/24/left-wing-dark-money-anti-trump-lawfare-report/","date":"2026-01-24","category":"investigation"},
+      {"id":12,"title":"Kash Patel Takes The Reins At FBI And Immediately Starts Shaking Things Up","url":"https://dailycaller.com/2026/01/23/kash-patel-fbi-director-changes-shakeup/","date":"2026-01-23","category":"culture"},
+      {"id":13,"title":"Trump's Inauguration Was A Massive Power Move. Here's Why.","url":"https://dailycaller.com/2026/01/21/trump-inauguration-power-move-analysis/","date":"2026-01-21","category":"politics"},
+      {"id":14,"title":"EXCLUSIVE: Biden's Last-Minute Regulation Blitz Could Cost Americans Billions","url":"https://dailycaller.com/2026/01/17/biden-last-minute-regulations-cost-billions/","date":"2026-01-17","category":"investigation"},
+      {"id":15,"title":"The Left's Meltdown Over Trump's Cabinet Picks Shows They've Learned Nothing","url":"https://dailycaller.com/2026/01/15/left-meltdown-trump-cabinet-picks-analysis/","date":"2026-01-15","category":"politics"},
+      {"id":16,"title":"EXCLUSIVE: Top Pentagon Officials Were Running A Secret Slush Fund, Report Finds","url":"https://dailycaller.com/2026/01/13/pentagon-officials-secret-slush-fund-report/","date":"2026-01-13","category":"investigation"},
+      {"id":17,"title":"Here's What Trump's First 100 Hours Could Look Like","url":"https://dailycaller.com/2026/01/10/trump-first-100-hours-executive-orders-plan/","date":"2026-01-10","category":"politics"},
+      {"id":18,"title":"ANALYSIS: The Real Reason Democrats Are Panicking About RFK Jr.","url":"https://dailycaller.com/2025/12/20/democrats-panicking-rfk-jr-hhs-confirmation/","date":"2025-12-20","category":"politics"},
+      {"id":19,"title":"Elon Musk's DOGE Just Found Something Jaw-Dropping In The Federal Budget","url":"https://dailycaller.com/2025/12/18/elon-musk-doge-federal-budget-findings/","date":"2025-12-18","category":"culture"},
+      {"id":20,"title":"EXCLUSIVE: State Department Insiders Reveal Massive Waste In Foreign Aid Programs","url":"https://dailycaller.com/2025/12/15/state-department-waste-foreign-aid-programs-exclusive/","date":"2025-12-15","category":"investigation"},
+      {"id":21,"title":"Democrats' Plan To Pack The Supreme Court Just Hit A Major Roadblock","url":"https://dailycaller.com/2025/12/12/democrats-pack-supreme-court-roadblock/","date":"2025-12-12","category":"politics"},
+      {"id":22,"title":"China Is Quietly Building Military Bases In America's Backyard","url":"https://dailycaller.com/2025/12/10/china-military-bases-latin-america-caribbean/","date":"2025-12-10","category":"world"},
+      {"id":23,"title":"The Border Crisis Just Got A Whole Lot Worse. Here Are The Numbers.","url":"https://dailycaller.com/2025/11/25/border-crisis-numbers-immigration-data/","date":"2025-11-25","category":"politics"},
+      {"id":24,"title":"EXCLUSIVE: VA Whistleblower Says Veterans Are Dying Because Of Bureaucratic Incompetence","url":"https://dailycaller.com/2025/11/20/va-whistleblower-veterans-dying-bureaucratic-incompetence/","date":"2025-11-20","category":"investigation"},
+      {"id":25,"title":"How The Media Got The Trump Verdict Story Completely Wrong","url":"https://dailycaller.com/2025/11/15/media-trump-verdict-story-wrong-analysis/","date":"2025-11-15","category":"culture"},
+      {"id":26,"title":"ANALYSIS: Why Trump's Trade War With China Is Actually Working","url":"https://dailycaller.com/2025/11/10/trump-trade-war-china-working-analysis/","date":"2025-11-10","category":"world"},
+      {"id":27,"title":"Biden's DOJ Left Behind A Ticking Time Bomb For Trump","url":"https://dailycaller.com/2025/10/28/biden-doj-ticking-time-bomb-trump/","date":"2025-10-28","category":"politics"},
+      {"id":28,"title":"EXCLUSIVE: FBI Agents Say Morale Has Hit Rock Bottom Under Garland","url":"https://dailycaller.com/2025/10/22/fbi-agents-morale-rock-bottom-garland/","date":"2025-10-22","category":"investigation"},
+      {"id":29,"title":"The Shocking Amount Of Money The US Has Sent To Countries That Hate Us","url":"https://dailycaller.com/2025/10/15/us-foreign-aid-money-countries-hate-america/","date":"2025-10-15","category":"investigation"},
+      {"id":30,"title":"Trump's New Executive Order Could Fundamentally Change How Government Works","url":"https://dailycaller.com/2025/10/08/trump-executive-order-change-government-schedule-f/","date":"2025-10-08","category":"politics"},
+      {"id":31,"title":"EXCLUSIVE: Inside The Secret Plan To Gut The EPA Under Trump","url":"https://dailycaller.com/2025/09/28/secret-plan-gut-epa-trump-administration/","date":"2025-09-28","category":"investigation"},
+      {"id":32,"title":"Democrats Are Losing The Culture War And They Know It","url":"https://dailycaller.com/2025/09/20/democrats-losing-culture-war-analysis/","date":"2025-09-20","category":"culture"},
+      {"id":33,"title":"Rubio Drops Financial Hammer On UN Envoy Behind Anti-Israel 'Lawfare' Push","url":"https://dailycaller.com/2025/09/10/rubio-sanctions-un-envoy-anti-israel-lawfare/","date":"2025-09-10","category":"world"},
+      {"id":34,"title":"Can Elon Musk Shatter America's Two-Party System?","url":"https://dailycaller.com/2025/08/28/elon-musk-two-party-system-analysis/","date":"2025-08-28","category":"culture"},
+      {"id":35,"title":"Elon Musk Makes Eye-Opening Admission About Shortcomings Of DOGE","url":"https://dailycaller.com/2025/08/15/elon-musk-doge-shortcomings-admission/","date":"2025-08-15","category":"culture"},
+      {"id":36,"title":"Kamala Harris Manages To Bore California Voters Into GOP Curiosity, New Poll Shows","url":"https://dailycaller.com/2025/07/02/kamala-harris-manages-to-bore-california-voters-into-gop-curiosity-new-poll-shows/","date":"2025-07-02","category":"politics"},
+      {"id":37,"title":"FBI's New HQ Is A Total Slap In The Face To Democrats","url":"https://dailycaller.com/2025/07/01/fbis-new-hq-is-a-total-slap-in-the-face-to-democrats/","date":"2025-07-01","category":"politics"},
+      {"id":38,"title":"Chinese Operatives Spent Years Spying On Navy Bases In US, FBI Alleges","url":"https://dailycaller.com/2025/07/01/chinese-operatives-spent-years-spying-on-navy-bases-in-us-fbi-alleges/","date":"2025-07-01","category":"politics"},
+      {"id":39,"title":"EXCLUSIVE: Social Security Fraud Just Tip Of The Iceberg, Trump's New Commissioner Says","url":"https://dailycaller.com/2025/07/01/social-security-fraud-tip-iceberg-trump-commissioner/","date":"2025-07-01","category":"investigation"},
+      {"id":40,"title":"Here's How Much Taxpayer Cash The Government Funneled To Groups Pushing Trans Ideology On Kids","url":"https://dailycaller.com/2025/07/01/taxpayer-cash-government-trans-ideology-kids/","date":"2025-07-01","category":"culture"}
+    ];
+
+    const mo = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    function fmt(d) { const [y,m,day]=d.split('-'); return `${mo[+m-1]} ${+day}, ${y}`; }
+
+    document.getElementById('count').textContent = `${articles.length} articles`;
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.querySelectorAll('thead tr').forEach((tr, i) => {
+        tr.style.animationDelay = `${i * 0.018}s`;
+      });
+    }
+
+    const tbody = document.getElementById('list');
+    articles.forEach((a, i) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td></td>
+        <td class="td-num">${String(i+1).padStart(2,'0')}</td>
+        <td class="td-date">${fmt(a.date)}</td>
+        <td class="td-title"><a href="${a.url}" target="_blank" rel="noopener noreferrer">${a.title}</a></td>
+        <td class="td-cat">${a.category}</td>
+        <td></td>
+      `;
+      tr.style.animationDelay = `${(i + 2) * 0.018}s`;
+      tr.addEventListener('click', () => window.open(a.url, '_blank', 'noopener,noreferrer'));
+      tbody.appendChild(tr);
+    });
+  </script>
+</body>
+</html>

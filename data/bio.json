@@ -1,0 +1,14 @@
+{
+  "name": "Thomas English",
+  "title": "Contributor",
+  "publication": "The Daily Caller",
+  "bio": "Contributor at The Daily Caller covering politics, investigations, and world affairs.",
+  "photo": "https://images.dailycaller.com/image/width=200,height=200,fit=cover,format=webp,f=auto/https://cdn01.dailycaller.com/wp-content/uploads/2025/06/thomas-english.jpg",
+  "photoLocal": "assets/images/thomas.jpg",
+  "social": {
+    "dailycaller": "https://dailycaller.com/author/TEnglish/",
+    "email": "",
+    "twitter": "",
+    "linkedin": ""
+  }
+}

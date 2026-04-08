@@ -1,0 +1,22 @@
+[
+  {
+    "slug": "culture",
+    "label": "Culture",
+    "color": "#F2C94C"
+  },
+  {
+    "slug": "investigation",
+    "label": "Investigation",
+    "color": "#1A1A1A"
+  },
+  {
+    "slug": "politics",
+    "label": "Politics",
+    "color": "#D4622B"
+  },
+  {
+    "slug": "world",
+    "label": "World",
+    "color": "#4A6B8A"
+  }
+]

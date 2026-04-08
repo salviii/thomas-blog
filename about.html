@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — Thomas English</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/reset.css">
+  <style>
+    html, body {
+      height: 100%;
+      background: #F8F5E9;
+      color: var(--color-black);
+      font-family: var(--font-sans);
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 500;
+      background: radial-gradient(
+        ellipse at 50% 50%,
+        transparent                 0%,
+        rgba(180,180,175,0.04)     62%,
+        rgba(100,100, 95,0.20)     84%,
+        rgba( 20, 20, 18,0.50)    100%
+      );
+      mix-blend-mode: multiply;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(5px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .c {
+      opacity: 0;
+      animation: fadeUp 0.16s ease forwards;
+    }
+    @media (prefers-reduced-motion: reduce) { .c { opacity: 1; animation: none; } }
+
+    @keyframes noiseShift {
+      0%   { transform: translate(0,    0);   }
+      12%  { transform: translate(-5px, 3px); }
+      25%  { transform: translate( 4px,-4px); }
+      37%  { transform: translate(-3px, 5px); }
+      50%  { transform: translate( 5px,-2px); }
+      62%  { transform: translate(-4px,-4px); }
+      75%  { transform: translate( 3px, 5px); }
+      87%  { transform: translate(-5px,-1px); }
+      100% { transform: translate( 2px, 3px); }
+    }
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 501;
+      opacity: 0.25;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.68' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 256px 256px;
+      animation: noiseShift 0.05s steps(1) infinite;
+    }
+
+    /* ── Shared cell base ── */
+    .c {
+      background: #F8F5E9;
+      padding: 18px 20px;
+      position: relative;
+      border-right:  1px dotted rgba(30,30,30,0.22);
+      border-bottom: 1px dotted rgba(30,30,30,0.22);
+    }
+    .num {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: rgba(30,30,30,0.2);
+      position: absolute;
+      top: 7px;
+      left: 9px;
+    }
+
+    /* ── 4-col grid fills viewport ── */
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 2fr 2fr 1fr;
+      grid-template-rows: repeat(5, 1fr);
+      min-height: 100vh;
+    }
+
+    /* Remove outer borders */
+    .grid .c:nth-child(4n)      { border-right: none; }
+    .grid .c:nth-last-child(-n+4){ border-bottom: none; }
+
+    /* ── Cell content styles ── */
+    .cell-back a {
+      font-family: var(--font-serif);
+      font-size: 22px;
+      letter-spacing: 0.06em;
+      color: var(--color-gray);
+      text-decoration: none;
+      display: flex;
+      align-items: flex-end;
+      height: 100%;
+      padding-bottom: 2px;
+    }
+    .cell-back a:hover { color: var(--color-black); }
+
+    .cell-name {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+    .cell-name h1 {
+      font-family: var(--font-serif);
+      font-size: 28px;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      line-height: 1.1;
+    }
+
+    .cell-surname {
+      display: flex;
+      align-items: flex-end;
+      justify-content: flex-end;
+    }
+    .cell-surname span {
+      font-family: var(--font-serif);
+      font-size: 28px;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+    }
+
+    .cell-role {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .cell-role .role-title {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-gray);
+    }
+    .cell-role .role-pub {
+      font-family: var(--font-serif);
+      font-size: 13px;
+      font-style: italic;
+      margin-top: 4px;
+    }
+
+    .cell-bio {
+      display: flex;
+      align-items: center;
+    }
+    .cell-bio p {
+      font-family: var(--font-serif);
+      font-size: 13px;
+      font-style: italic;
+      line-height: 1.65;
+      color: rgba(30,30,30,0.72);
+    }
+
+    .cell-link a {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      height: 100%;
+      text-decoration: none;
+      color: var(--color-black);
+      transition: background 0.15s ease;
+    }
+    .cell-link:hover { background: var(--color-yellow); }
+    .cell-link .lk-label {
+      font-size: 8px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-gray);
+    }
+    .cell-link:hover .lk-label { color: rgba(30,30,30,0.45); }
+    .cell-link .lk-name {
+      font-family: var(--font-serif);
+      font-size: 14px;
+      margin-top: 4px;
+    }
+    .cell-link .lk-arrow {
+      font-family: var(--font-serif);
+      font-size: 18px;
+      margin-top: 2px;
+    }
+
+    .cell-yellow { background: var(--color-yellow); }
+    .cell-black  { background: var(--color-black); color: #F8F5E9; }
+    .cell-black .num { color: rgba(255,255,255,0.18); }
+  </style>
+</head>
+<body>
+  <div class="grid" id="grid">
+    <!-- Row 0 -->
+    <div class="c"><span class="num">01</span></div>
+    <div class="c cell-back"><span class="num">02</span><a href="index.html">← Index</a></div>
+    <div class="c"><span class="num">03</span></div>
+    <div class="c"><span class="num">04</span></div>
+
+    <!-- Row 1: Name -->
+    <div class="c"><span class="num">05</span></div>
+    <div class="c cell-name"><span class="num">06</span><h1>Thomas</h1></div>
+    <div class="c cell-surname"><span class="num">07</span><span>English</span></div>
+    <div class="c"><span class="num">08</span></div>
+
+    <!-- Row 2: Role + Bio -->
+    <div class="c"><span class="num">09</span></div>
+    <div class="c cell-role">
+      <span class="num">10</span>
+      <span class="role-title">Contributor</span>
+      <span class="role-pub">The Daily Caller</span>
+    </div>
+    <div class="c cell-bio">
+      <span class="num">11</span>
+      <p>Covering politics, investigations, world affairs, and culture. Reporting focused on government accountability and the forces shaping American public life.</p>
+    </div>
+    <div class="c"><span class="num">12</span></div>
+
+    <!-- Row 3: Links -->
+    <div class="c"><span class="num">13</span></div>
+    <div class="c cell-link">
+      <span class="num">14</span>
+      <a href="https://dailycaller.com/author/TEnglish/" target="_blank" rel="noopener noreferrer">
+        <span class="lk-label">Publication</span>
+        <span class="lk-name">The Daily Caller</span>
+        <span class="lk-arrow">→</span>
+      </a>
+    </div>
+    <div class="c cell-link">
+      <span class="num">15</span>
+      <a href="articles.html">
+        <span class="lk-label">Archive</span>
+        <span class="lk-name">All Articles</span>
+        <span class="lk-arrow">→</span>
+      </a>
+    </div>
+    <div class="c"><span class="num">16</span></div>
+
+    <!-- Row 4: More links -->
+    <div class="c"><span class="num">17</span></div>
+    <div class="c cell-link cell-yellow">
+      <span class="num">18</span>
+      <a href="assets/thomas-resume.pdf" target="_blank" rel="noopener noreferrer">
+        <span class="lk-label">Document</span>
+        <span class="lk-name">Résumé</span>
+        <span class="lk-arrow">→</span>
+      </a>
+    </div>
+    <div class="c cell-link cell-black">
+      <span class="num">19</span>
+      <a href="video.html" style="color:#F8F5E9;">
+        <span class="lk-label" style="color:rgba(255,255,255,0.4)">Gallery</span>
+        <span class="lk-name">Video</span>
+        <span class="lk-arrow">→</span>
+      </a>
+    </div>
+    <div class="c"><span class="num">20</span></div>
+  </div>
+  <script>
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.querySelectorAll('#grid .c').forEach((el, i) => {
+        el.style.animationDelay = `${i * 0.018}s`;
+      });
+    }
+  </script>
+</body>
+</html>

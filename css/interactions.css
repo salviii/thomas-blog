@@ -1,0 +1,83 @@
+/* ── Hover & Interaction States ────────────────────────────── */
+
+.cell--article,
+.cell--image,
+.cell--nav {
+  transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.cell--nav:hover {
+  transform: scale(1.03);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.18);
+  z-index: 10;
+}
+.cell--nav:not(.cell--black):not(.cell--yellow):hover {
+  background-color: var(--color-yellow);
+}
+
+.cell--image:hover {
+  transform: scale(1.03);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+  z-index: 10;
+}
+.cell--image:hover img {
+  filter: grayscale(100%) contrast(1.15) brightness(0.7);
+}
+
+.cell--article:hover {
+  background-color: var(--color-yellow);
+  color: var(--color-black);
+  transform: scale(1.03);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+}
+
+.cell--article:hover .cell-number { color: rgba(30,30,30,0.2); }
+.cell--article:hover .cell-tag { color: rgba(30,30,30,0.4) !important; }
+.cell--article:hover .cell-date { color: rgba(30,30,30,0.4) !important; }
+
+.cell--readmore {
+  transition: background-color 0.2s ease, transform 0.15s ease;
+}
+.cell--readmore:hover {
+  background-color: var(--color-yellow);
+  color: var(--color-black);
+  transform: scale(1.03);
+  z-index: 10;
+}
+
+/* Focus */
+.cell:focus-visible {
+  outline: 2px solid var(--color-yellow);
+  outline-offset: -2px;
+}
+
+/* ── Drag & Drop states ────────────────────────────────── */
+.cell[draggable="true"] { cursor: grab; }
+.cell[draggable="true"]:active { cursor: grabbing; }
+
+.cell--dragging {
+  opacity: 0.3;
+  transform: scale(0.97);
+  transition: opacity 0.1s ease, transform 0.1s ease;
+}
+
+.cell--drag-over {
+  box-shadow: inset 0 0 0 2px rgba(30,30,30,0.25);
+  z-index: 20;
+}
+
+/* ── Staggered Fade-in ──────────────────────────────────── */
+@keyframes cellFadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.cell {
+  opacity: 0;
+  animation: cellFadeIn 0.18s ease forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cell { opacity: 1; animation: none; }
+}
