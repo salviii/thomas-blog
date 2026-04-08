@@ -1,0 +1,199 @@
+/* ── Grid Builder — JBL Catalog Style ──────────────────────── */
+/* 6×5 grid = 30 cells. Mix of articles, images, yellow       */
+/* accents, blank cells, bio, specs, and read-more.           */
+
+const GridBuilder = (() => {
+
+  const COLS = 6;
+  const ROWS = 5;
+
+  function formatDate(d) {
+    if (!d) return '';
+    const m = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const [y, mo, day] = d.split('-');
+    return `${m[parseInt(mo,10)-1]} ${parseInt(day,10)}, ${y}`;
+  }
+
+  function esc(s) {
+    if (!s) return '';
+    const d = document.createElement('div');
+    d.textContent = s;
+    return d.innerHTML;
+  }
+
+  function cap(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : ''; }
+
+  function edgeAttr(r, c) {
+    const top = r === 0, bot = r === ROWS-1, left = c === 0, right = c === COLS-1;
+    if (top && left) return 'top-left';
+    if (top && right) return 'top-right';
+    if (bot && left) return 'bottom-left';
+    if (bot && right) return 'bottom-right';
+    if (top) return 'top';
+    if (bot) return 'bottom';
+    if (left) return 'left';
+    if (right) return 'right';
+    return '';
+  }
+
+
+  /**
+   * LAYOUT MAP for the 6×5 = 30 cell grid
+   * Each cell: { type, color, span?, image?, edge? }
+   *
+   * Visual map:
+   *  R0: [blank ] [art   ] [blank ] [blank ] [img   ] [blank ]
+   *  R1: [blank ] [art   ] [art   ] [YELLOW] [art   ] [blank ]
+   *  R2: [img   ] [BIO   ] [art   ] [art   ] [blank ] [img   ]
+   *  R3: [blank ] [art   ] [READ  ] [art   ] [art   ] [blank ]
+   *  R4: [blank ] [blank ] [art   ] [blank ] [blank ] [blank ]
+   */
+  const GRID = [
+    // Row 0
+    { type:'blank',   color:''},
+    { type:'article', color:''},
+    { type:'blank',   color:'cell--cream'},
+    { type:'blank',   color:'cell--pale'},
+    { type:'image',   color:''},
+    { type:'blank',   color:''},
+    // Row 1
+    { type:'blank',   color:'cell--pale'},
+    { type:'article', color:'cell--black'},
+    { type:'article', color:''},
+    { type:'blank',   color:'cell--yellow'},
+    { type:'article', color:''},
+    { type:'blank',   color:''},
+    // Row 2
+    { type:'image',   color:''},
+    { type:'bio',     color:''},
+    { type:'article', color:''},
+    { type:'article', color:'cell--darkgray'},
+    { type:'blank',   color:'cell--yellow'},
+    { type:'image',   color:''},
+    // Row 3
+    { type:'blank',   color:''},
+    { type:'article', color:''},
+    { type:'readmore',color:'cell--black'},
+    { type:'article', color:'cell--black'},
+    { type:'article', color:''},
+    { type:'blank',   color:'cell--pale'},
+    // Row 4
+    { type:'blank',   color:'cell--pale'},
+    { type:'blank',   color:''},
+    { type:'article', color:''},
+    { type:'image',   color:''},
+    { type:'blank',   color:''},
+    { type:'blank',   color:''},
+  ];
+
+  function makeCell(cfg, index, articles, bio, artIdx, imgIdx) {
+    const row = Math.floor(index / COLS);
+    const col = index % COLS;
+    const edge = edgeAttr(row, col);
+
+    if (cfg.type === 'article' && artIdx.i < articles.length) {
+      const art = articles[artIdx.i++];
+      const a = document.createElement('a');
+      a.className = `cell cell--article ${cfg.color}`.trim();
+      a.href = art.url;
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      a.setAttribute('data-category', art.category);
+      if (edge) a.setAttribute('data-edge', edge);
+
+      a.innerHTML = `
+        <span class="cell-number"></span>
+        <div class="cell-content">
+          <h3 class="cell-title">${esc(art.title)}</h3>
+          <span class="cell-date">${formatDate(art.date)}</span>
+        </div>
+        <span class="cell-tag">${cap(art.category)}</span>
+      `;
+      return a;
+    }
+
+    if (cfg.type === 'bio') {
+      const div = document.createElement('div');
+      div.className = `cell cell--bio ${cfg.color}`.trim();
+      if (edge) div.setAttribute('data-edge', edge);
+      div.innerHTML = `
+        <span class="cell-number"></span>
+        <div class="cell-content">
+          <h2 class="bio-name">${esc(bio.name)}</h2>
+          <span class="bio-subtitle">${esc(bio.title)} — ${esc(bio.publication)}</span>
+          <p class="bio-text">${esc(bio.bio)}</p>
+        </div>
+      `;
+      return div;
+    }
+
+    if (cfg.type === 'readmore') {
+      const a = document.createElement('a');
+      a.className = `cell cell--readmore ${cfg.color}`.trim();
+      a.href = bio.social?.dailycaller || '#';
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      if (edge) a.setAttribute('data-edge', edge);
+      a.innerHTML = `
+        <span class="cell-number"></span>
+        <span class="rm-text">All Articles</span>
+        <span class="rm-arrow">&rarr;</span>
+      `;
+      return a;
+    }
+
+    if (cfg.type === 'image') {
+      const pool = imgIdx.pool.length ? imgIdx.pool : articles;
+      const art = pool[imgIdx.i % pool.length];
+      imgIdx.i++;
+      const a = document.createElement('a');
+      a.className = `cell cell--image ${cfg.color}`.trim();
+      a.href = art.url;
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      a.setAttribute('data-category', art.category);
+      if (edge) a.setAttribute('data-edge', edge);
+      a.innerHTML = `
+        <span class="cell-number"></span>
+        <img src="${esc(art.image)}" alt="" loading="lazy">
+        <div class="image-overlay">
+          <h3 class="image-title">${esc(art.title)}</h3>
+          <span class="image-tag">${cap(art.category)}</span>
+        </div>
+      `;
+      return a;
+    }
+
+    // blank
+    const div = document.createElement('div');
+    div.className = `cell cell--blank ${cfg.color}`.trim();
+    if (edge) div.setAttribute('data-edge', edge);
+    div.innerHTML = `<span class="cell-number"></span>`;
+    return div;
+  }
+
+  function numberCells(grid) {
+    grid.querySelectorAll('.cell').forEach((cell, i) => {
+      const num = cell.querySelector('.cell-number');
+      if (num) num.textContent = String(i + 1).padStart(2, '0');
+    });
+  }
+
+  function build(grid, articles, bio) {
+    const artIdx = { i: 0 };
+    // Image cells pull only from articles that have a real image URL
+    const imgArticles = articles.filter(a => a.image);
+    const imgIdx = { i: 0, pool: imgArticles };
+    const fragment = document.createDocumentFragment();
+
+    GRID.forEach((cfg, i) => {
+      fragment.appendChild(makeCell(cfg, i, articles, bio, artIdx, imgIdx));
+    });
+
+    grid.appendChild(fragment);
+    numberCells(grid);
+    return GRID.length;
+  }
+
+  return { build };
+})();
